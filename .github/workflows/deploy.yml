@@ -25,11 +25,11 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:latest .
+          docker build -t ghcr.io/naseer-ahmed/$IMAGE_NAME:latest .
 
       - name: Push Docker image to GHCR
         run: |
-          docker push ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME:latest
+          docker push ghcr.io/naseer-ahmed/$IMAGE_NAME:latest
 
       - name: Deploy on EC2 over SSH
         uses: appleboy/ssh-action@v1.2.2
@@ -38,8 +38,8 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
-            docker pull ghcr.io/${{ github.repository_owner }}/welcome-to-docker:latest
+            docker login ghcr.io -u naseer-ahmed -p ${{ secrets.GITHUB_TOKEN }}
+            docker pull ghcr.io/naseer-ahmed/welcome-to-docker:latest
 
             docker stop react-app || true
             docker rm react-app || true
@@ -48,4 +48,4 @@ jobs:
               --name react-app \
               -p 3000:80 \
               --restart unless-stopped \
-              ghcr.io/${{ github.repository_owner }}/welcome-to-docker:latest
+              ghcr.io/naseer-ahmed/welcome-to-docker:latest
